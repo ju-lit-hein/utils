@@ -1,0 +1,74 @@
+
+if [ -f /etc/bashrc ]; 
+then        
+    . /etc/bashrc 
+fi
+
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]] 
+then    
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH" 
+fi
+PATH="$HOME/my-scripts/:$PATH"
+export PATH
+
+if [ -d ~/.bashrc.d ]; then        
+    for rc in ~/.bashrc.d/*; do                
+        if [ -f "$rc" ]; then                        
+            . "$rc"                
+        fi        
+    done fi
+
+function mkcd()
+{
+    mkdir $1;
+    cd $1;
+}
+
+function save_bashrc()
+{
+    rm ~/perso/utils/save_bashrc;
+    cp ~/.bashrc ~/perso/utils/save_bashrc;
+    cd ~/perso/utils/;
+    git add --all;
+    git commit -m "bashrc modifications";
+    git push;
+}
+
+transfer(){ if [ $# -eq 0 ];then echo "No arguments specified.\nUsage:\n transfer <file|directory>\n ... | transfer <file_name>">&2;return 1;fi;if tty -s;then file="$1";file_name=$(basename "$file");if [ ! -e "$file" ];then echo "$file: No such file or directory">&2;return 1;fi;if [ -d "$file" ];then file_name="$file_name.zip" ,;(cd "$file"&&zip -r -q - .)|curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name"|tee /dev/null,;else cat "$file"|curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name"|tee /dev/null;fi;else file_name=$1;curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name"|tee /dev/null;fi;}
+
+xset s off
+xset -dpms
+gk epitech
+setxkbmap us
+
+alias l="ls"
+alias la="ls -a"
+alias lla="ls -al"
+alias lal="ls -al"
+alias em="emacs"
+alias cdd="cd ../"
+alias cddd="cd ../../"
+alias cdddd="cd ../../../"
+alias cl="clear"
+alias c="clear"
+alias cs="coding-style ./ ./"
+alias em="emacs"
+alias gi="printf '*.a\n*.o\n*.bin\n*.out\n*.log' >> .gitignore"
+alias mc="mr_clean"
+alias please="sudo"
+alias pt="push_that.sh"
+alias off="systemctl poweroff"
+alias sl="slock"
+alias hdmi="xrandr --output HDMI-1-0 --auto --same-as eDP-1"
+alias ,,,="setxkbmap us"
+alias ga="git add"
+alias gaa="git add --all"
+alias gc="git commit -m"
+alias gcd='git commit -m "add a lot of functionnalities"'
+alias gp="git push"
+alias bc="bc -l"
+alias diff="colordiff"
+alias alias="yes casse toi avec ton "
+unset rc
+[ -f "/home/julithein/.ghcup/env" ] && source "/home/julithein/.ghcup/env" # ghcup-env
+. "$HOME/.cargo/env"
