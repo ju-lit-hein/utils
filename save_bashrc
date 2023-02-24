@@ -65,10 +65,11 @@ alias ,,,="setxkbmap us"
 alias ga="git add"
 alias gaa="git add --all"
 alias gc="git commit -m"
-alias gcd='git commit -m "add a lot of functionnalities"'
+alias gcm='git commit -m "add a lot of functionnalities"'
 alias gp="git push"
 alias bc="bc -l"
 alias diff="colordiff"
+alias i3lock="i3lock -c 000000"
 alias alias="yes casse toi avec ton "
 unset rc
 [ -f "/home/julithein/.ghcup/env" ] && source "/home/julithein/.ghcup/env" # ghcup-env
