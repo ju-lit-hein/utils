@@ -1,22 +1,22 @@
 
 
-if [ -f /etc/bashrc ]; 
-then        
-    . /etc/bashrc 
+if [ -f /etc/bashrc ];
+then
+    . /etc/bashrc
 fi
 
-if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]] 
-then    
-    PATH="$HOME/.local/bin:$HOME/bin:$PATH" 
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 PATH="$HOME/my-scripts/:$PATH"
 export PATH
 
-if [ -d ~/.bashrc.d ]; then        
-    for rc in ~/.bashrc.d/*; do                
-        if [ -f "$rc" ]; then                        
-            . "$rc"                
-        fi        
+if [ -d ~/.bashrc.d ]; then
+    for rc in ~/.bashrc.d/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
     done fi
 
 function mkcd()
@@ -78,8 +78,7 @@ alias mc="mr_clean"
 alias please="sudo"
 alias pt="push_that.sh"
 alias off="systemctl poweroff"
-alias sl="slock"
-alias hdmi="xrandr --output HDMI-1-0 --auto --same-as eDP-1"
+alias sl="setxkbmap ru"
 alias ,,,="setxkbmap us"
 alias ga="make fclean; git add"
 alias gaa="make fclean; git add --all"
@@ -90,7 +89,6 @@ alias bc="bc -l"
 alias diff="colordiff"
 alias i3lock="i3lock -c 1c79bd"
 alias giiit="git"
-alias kbo="\*"
 alias outlook="firefox https://outlook.office.com/mail &"
 alias alias="yes casse toi avec ton "
 unset rc
