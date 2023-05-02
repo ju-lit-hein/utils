@@ -52,7 +52,7 @@ function save_config()
     cp ~/.bashrc ~/perso/utils/bashrc;
     cp ~/.config/i3/config ~/perso/utils/i3config;
     cp /etc/i3status.conf ~/perso/utils/i3status.conf;
-    cp -r ~/perso/slock ~/perso/utils/slock/;
+    cp -r ~/perso/slock ~/perso/utils/;
     cd ~/perso/utils/;
     git add --all;
     git commit -m "bashrc modifications";
