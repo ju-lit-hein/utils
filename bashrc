@@ -56,10 +56,14 @@ function mkcd()
     cd $1;
 }
 
-function save_bashrc()
+function save_config()
 {
-    rm ~/perso/utils/save_bashrc;
-    cp ~/.bashrc ~/perso/utils/save_bashrc;
+    rm ~/perso/utils/bashrc;
+    rm ~/perso/utils/i3config;
+    rm ~/perso/utils/i3status.conf;
+    cp ~/.bashrc ~/perso/utils/bashrc;
+    cp ~/.config/i3/config ~/perso/utils/i3config;
+    cp /etc/i3status.conf ~/perso/utils/i3status.conf;
     cd ~/perso/utils/;
     git add --all;
     git commit -m "bashrc modifications";
