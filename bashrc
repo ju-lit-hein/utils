@@ -19,22 +19,9 @@ if [ -d ~/.bashrc.d ]; then
         fi
     done fi
 
-parse_git_branch() {
+function parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
-
-lolcat <<EOF 
-
-  ______ _______ _____ ____     _____                 
- |  ____|__   __|_   _|  _ \   / ____|                
- | |__     | |    | | | |_) | | |     ___  _ __ _ __  
- |  __|    | |    | | |  _ <  | |    / _ \| '__| '_ \ 
- | |____   | |   _| |_| |_) | | |___| (_) | |  | |_) |
- |______|  |_|  |_____|____/   \_____\___/|_|  | .__/ 
-                                               | |    
-                                               |_|    
-
-EOF
 
 
 _RED=$(tput setaf 1)
@@ -47,7 +34,7 @@ _REV=$(tput rev)
 _RESET=$(tput sgr0)
 
 
-export PS1="${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A%e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}\W ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} > "
+export PS1="${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A%e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}[\w] ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} > "
 
 
 function mkcd()
@@ -61,9 +48,11 @@ function save_config()
     rm ~/perso/utils/bashrc;
     rm ~/perso/utils/i3config;
     rm ~/perso/utils/i3status.conf;
+    rm -r ~/perso/utils/slock;
     cp ~/.bashrc ~/perso/utils/bashrc;
     cp ~/.config/i3/config ~/perso/utils/i3config;
     cp /etc/i3status.conf ~/perso/utils/i3status.conf;
+    cp -r ~/perso/slock ~/perso/utils/slock/;
     cd ~/perso/utils/;
     git add --all;
     git commit -m "bashrc modifications";
