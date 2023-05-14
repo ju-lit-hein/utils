@@ -29,7 +29,7 @@ exec --no-startup-id dex --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec_always --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -232,7 +232,7 @@ mode "stream" {
 
 	bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +3% #increase sound volume
 	bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -3% #decrease sound volume
-     
+
      bindsym Return mode "default"
      bindsym Escape mode "default"
      bindsym $wint+x mode "default"
@@ -245,7 +245,7 @@ client.focused          #2C3D55 #2C3D55 #3993b9   #ff0000     #2C3D55
 client.focused_inactive #2C3D55 #2C3D55 #ff0000   #ffffff     #2C3D55
 client.unfocused        #2C3D55 #2C3D55 #3993b980 #ffffff     #2C3D55
 client.urgent           #2C3D55 #FF0000 #399b39   #ffffff     #2C3D55
-#lient.placeholder      
+#lient.placeholder
 
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -256,8 +256,8 @@ bar {
     font pango:DejaVu Sans Mono 10
 
 #                           border      background      text
-    colors {                
-        background          #051e3d     
+    colors {
+        background          #051e3d
         separator           #3393b9
         focused_workspace   #3993b9     #3993b9         #ffffff
         active_workspace    #3993b9     #3993b9         #ffffff

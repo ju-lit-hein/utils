@@ -49,10 +49,12 @@ function save_config()
     rm ~/perso/utils/i3config;
     rm ~/perso/utils/i3status.conf;
     rm -r ~/perso/utils/slock;
+    rm ~/perso/utils/init.vim;
     cp ~/.bashrc ~/perso/utils/bashrc;
     cp ~/.config/i3/config ~/perso/utils/i3config;
     cp /etc/i3status.conf ~/perso/utils/i3status.conf;
     cp -r ~/perso/slock ~/perso/utils/;
+    cp ~/.config/nvim/init.vim ~/perso/utils/init.vim;
     cd ~/perso/utils/;
     git add --all;
     git commit -m "bashrc modifications";
@@ -114,6 +116,7 @@ alias diff="colordiff"
 alias i3lock="i3lock -c 1c79bd"
 alias giiit="git"
 alias outlook="firefox https://outlook.office.com/mail &"
+alias vim="nvim"
 alias alias="yes casse toi avec ton "
 unset rc
 [ -f "/home/julithein/.ghcup/env" ] && source "/home/julithein/.ghcup/env" # ghcup-env
