@@ -1,5 +1,6 @@
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'mbbill/undotree'
 Plug 'HelifeWasTaken/VimTek'
 Plug 'HelifeWasTaken/VimUtils'
@@ -11,6 +12,13 @@ Plug 'numToStr/Comment.nvim'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'ggandor/lightspeed.nvim'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-fugitive'
+Plug 'dense-analysis/ale'
+Plug 'lambdalisue/battery.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-capslock'
 call plug#end()
 set nu rnu
 syntax on
@@ -106,6 +114,9 @@ nmap <silent> gr <Plug>(coc-references)
 
 
 
+let g:airline_extensions = ['ale', 'battery', 'branch', 'capslock', 'hunks']
+
+
 lua << EOF
 vim.opt.termguicolors = true
 vim.cmd [[highlight IndentBlanklineIndent1 guifg=#E06C75 gui=nocombine]]
@@ -150,3 +161,5 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-b> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+
+

@@ -33,9 +33,25 @@ _BOLD=$(tput bold)
 _REV=$(tput rev)
 _RESET=$(tput sgr0)
 
+#export PS1="S: \! | ${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A%e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}[\w] ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} \$ "
 
-export PS1="${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A%e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}[\w] ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} > "
+PROMPT_COMMAND=__prompt_command
 
+function __prompt_command()
+{
+    local EXIT="$?"
+    PS1="${_REV}"
+
+    local _LIGHT_GREEN=$(tput setaf 47)
+
+    if [ $EXIT != 0 ]; then
+        PS1+="${_RED}[$EXIT]"
+    else
+        PS1+="${_LIGHT_GREEN}[$EXIT]"
+    fi
+
+    PS1+="${_RESET} ${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A%e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}[\w] ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} > "
+}
 
 function mkcd()
 {
