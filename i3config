@@ -31,6 +31,11 @@ exec --no-startup-id dex --autostart --environment i3
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec_always --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
+
+# Start nofication manager
+exec_always killall dunst
+exec_always dunst
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
@@ -53,6 +58,8 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Shift+Return exec xfce4-terminal --drop-down
+bindsym Control+Shift+Return exec new_terminal
 #
 #
 # suspend and lock
@@ -241,10 +248,10 @@ mode "stream" {
 bindsym $wint+x mode "stream"
 
 # class                 border  backgr. text      indicator   child_border
-client.focused          #2C3D55 #2C3D55 #3993b9   #ff0000     #2C3D55
-client.focused_inactive #2C3D55 #2C3D55 #ff0000   #ffffff     #2C3D55
-client.unfocused        #2C3D55 #2C3D55 #3993b980 #ffffff     #2C3D55
-client.urgent           #2C3D55 #FF0000 #399b39   #ffffff     #2C3D55
+client.focused          #18B8C7 #2C3D55 #3993B9   #18B8C7     #18B8C7
+client.focused_inactive #00FF00 #2C3D55 #FF0000   #FFFFFF     #2C3D55
+client.unfocused        #2C3D55 #2C3D55 #3993B980 #FFFFFF     #2C3D55
+client.urgent           #2C3D55 #FF0000 #399B39   #FFFFFF     #2C3D55
 #lient.placeholder
 
 
@@ -266,4 +273,4 @@ bar {
     }
 }
 
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 4

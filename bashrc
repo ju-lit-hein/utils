@@ -20,7 +20,7 @@ if [ -d ~/.bashrc.d ]; then
     done fi
 
 function parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
 
@@ -133,6 +133,7 @@ alias i3lock="i3lock -c 1c79bd"
 alias giiit="git"
 alias outlook="firefox https://outlook.office.com/mail &"
 alias vim="nvim"
+alias lucas="echo \"c koi MUL\""
 alias alias="yes casse toi avec ton "
 unset rc
 [ -f "/home/julithein/.ghcup/env" ] && source "/home/julithein/.ghcup/env" # ghcup-env
