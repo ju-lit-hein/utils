@@ -59,7 +59,7 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec xfce4-terminal
 bindsym $mod+Shift+Return exec xfce4-terminal --drop-down
-bindsym Control+Shift+Return exec new_terminal
+#bindsym Control+Shift+Return exec new_terminal
 #
 #
 # suspend and lock
@@ -196,7 +196,7 @@ bindsym $mod+Shift+e mode "(L)ogout, (P)oweroff"
 bindsym $wint+l mode "(L)ogout, (P)oweroff"
 
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
-exec_always xcompmgr &
+exec_always --no-startup-id picom -b
 exec_always feh --bg-fill /home/julithein/Pictures/Wallpaper.jpg &
 
 # resize window (you can also use the mouse for that)
@@ -247,13 +247,28 @@ mode "stream" {
 
 bindsym $wint+x mode "stream"
 
-# class                 border  backgr. text      indicator   child_border
-client.focused          #18B8C7 #2C3D55 #3993B9   #18B8C7     #18B8C7
-client.focused_inactive #00FF00 #2C3D55 #FF0000   #FFFFFF     #2C3D55
-client.unfocused        #2C3D55 #2C3D55 #3993B980 #FFFFFF     #2C3D55
-client.urgent           #2C3D55 #FF0000 #399B39   #FFFFFF     #2C3D55
-#lient.placeholder
+mode "screen" {
+    bindsym d exec --no-startup-id xrandr --output HDMI-1 --same-as eDP-1 --auto --output HDMI-1 --mode 1920x1080
+    bindsym h exec --no-startup-id xrandr --output HDMI-1 --left-of eDP-1 --auto
+    bindsym l exec --no-startup-id xrandr --output HDMI-1 --right-of eDP-1 --auto
+    bindsym k exec --no-startup-id xrandr --output HDMI-1 --above eDP-1 --auto
+    bindsym j exec --no-startup-id xrandr --output HDMI-1 --below eDP-1 --auto
+    bindsym p exec --no-startup-id xrandr --output HDMI-1 --off
 
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $wint+p mode "default"
+
+}
+
+bindsym $wint+p mode "screen"
+
+# class                 border  backgr. text      indicator   child_border
+client.focused          #18B8C7 #2C3D55 #3993B9   #18B8C7     #FFFFFF
+client.focused_inactive #00FF00 #2C3D55 #FF0000   #FFFFFF     #000000
+client.unfocused        #2C3D55 #2C3D55 #3993B980 #FFFFFF     #000000
+client.urgent           #2C3D55 #FF0000 #399B39   #FFFFFF     #FF0000
+#lient.placeholder
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -274,3 +289,6 @@ bar {
 }
 
 for_window [class="^.*"] border pixel 4
+
+gaps inner 10
+gaps outer 0

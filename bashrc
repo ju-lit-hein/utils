@@ -64,11 +64,13 @@ function save_config()
     rm ~/perso/utils/bashrc;
     rm ~/perso/utils/i3config;
     rm ~/perso/utils/i3status.conf;
+    rm ~/perso/utils/picom.conf;
     rm -r ~/perso/utils/slock;
     rm ~/perso/utils/init.vim;
     cp ~/.bashrc ~/perso/utils/bashrc;
     cp ~/.config/i3/config ~/perso/utils/i3config;
     cp /etc/i3status.conf ~/perso/utils/i3status.conf;
+    cp ~/.config/picom/picom.conf ~/perso/utils/picom.conf;
     cp -r ~/perso/slock ~/perso/utils/;
     cp ~/.config/nvim/init.vim ~/perso/utils/init.vim;
     cd ~/perso/utils/;
@@ -101,7 +103,6 @@ transfer(){ if [ $# -eq 0 ];then echo "No arguments specified.\nUsage:\n transfe
 xset s off
 xset -dpms
 gk epitech
-setxkbmap us
 
 alias l="ls"
 alias la="ls -a"
@@ -134,6 +135,7 @@ alias giiit="git"
 alias outlook="firefox https://outlook.office.com/mail &"
 alias vim="nvim"
 alias lucas="echo \"c koi MUL\""
+alias ana="echo \"<3\""
 alias alias="yes casse toi avec ton "
 unset rc
 [ -f "/home/julithein/.ghcup/env" ] && source "/home/julithein/.ghcup/env" # ghcup-env
