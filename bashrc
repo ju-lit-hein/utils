@@ -33,9 +33,9 @@ _BOLD=$(tput bold)
 _REV=$(tput rev)
 _RESET=$(tput sgr0)
 
-#export PS1="S: \! | ${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A%e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}[\w] ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} \$ "
+#export PS1="S: \! | ${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A %e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}[\w] ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} \$ "
 
-PROMPT_COMMAND=__prompt_command
+#PROMPT_COMMAND=__prompt_command
 
 function __prompt_command()
 {
@@ -50,7 +50,7 @@ function __prompt_command()
         PS1+="${_LIGHT_GREEN}[$EXIT]"
     fi
 
-    PS1+="${_RESET} ${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A%e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}[\w] ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} > "
+    PS1+="${_RESET} ${_BOLD}${_BLUE}[\s] ${_RESET}${_GREEN}(\D{%A %e %B} | \t) ${_RESET}${_BOLD}${_VIOLET}[\w] ${_RED}\$(parse_git_branch)${_RESET}\n${_CYAN}${_BOLD}\u${_RESET} > "
 }
 
 function mkcd()
@@ -65,12 +65,14 @@ function save_config()
     rm ~/perso/utils/i3config;
     rm ~/perso/utils/i3status.conf;
     rm ~/perso/utils/picom.conf;
+    rm ~/perso/utils/alacritty.yml;
     rm -r ~/perso/utils/slock;
     rm ~/perso/utils/init.vim;
     cp ~/.bashrc ~/perso/utils/bashrc;
     cp ~/.config/i3/config ~/perso/utils/i3config;
     cp /etc/i3status.conf ~/perso/utils/i3status.conf;
     cp ~/.config/picom/picom.conf ~/perso/utils/picom.conf;
+    cp ~/.config/alacritty/alacritty.yml ~/perso/utils/alacritty.yml;
     cp -r ~/perso/slock ~/perso/utils/;
     cp ~/.config/nvim/init.vim ~/perso/utils/init.vim;
     cd ~/perso/utils/;
