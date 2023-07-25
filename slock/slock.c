@@ -62,6 +62,7 @@ struct xrandr {
 	int errbase;
 };
 
+Screen *scr;
 Imlib_Image image;
 
 static void
@@ -295,101 +296,201 @@ drawlogo(Display *dpy, struct lock *lock, int color)
 	XSync(dpy, False);
 }
 
-static void
-readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
-       const char *hash, char *message)
+// static void
+// readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
+//        const char *hash, char *message)
+// {
+// 	XRRScreenChangeNotifyEvent *rre;
+// 	char buf[32], passwd[256], *inputhash;
+// 	int num, screen, running, failure, oldc;
+// 	unsigned int len, color;
+// 	KeySym ksym;
+// 	XEvent ev;
+//
+// 	len = 0;
+// 	running = 1;
+// 	failure = 0;
+// 	oldc = INIT;
+//
+// 	while (running && !XNextEvent(dpy, &ev)) {
+// 		if (ev.type == KeyPress) {
+// 			explicit_bzero(&buf, sizeof(buf));
+// 			num = XLookupString(&ev.xkey, buf, sizeof(buf), &ksym, 0);
+// 			if (IsKeypadKey(ksym)) {
+// 				if (ksym == XK_KP_Enter)
+// 					ksym = XK_Return;
+// 				else if (ksym >= XK_KP_0 && ksym <= XK_KP_9)
+// 					ksym = (ksym - XK_KP_0) + XK_0;
+// 			}
+// 			if (IsFunctionKey(ksym) ||
+// 			    IsKeypadKey(ksym) ||
+// 			    IsMiscFunctionKey(ksym) ||
+// 			    IsPFKey(ksym) ||
+// 			    IsPrivateKeypadKey(ksym))
+// 				continue;
+// 			switch (ksym) {
+// 			case XK_Return:
+// 				passwd[len] = '\0';
+// 				errno = 0;
+// 				if (!(inputhash = crypt(passwd, hash)))
+// 					fprintf(stderr, "slock: crypt: %s\n", strerror(errno));
+// 				else
+// 					running = !!strcmp(inputhash, hash);
+// 				if (running) {
+// 					XBell(dpy, 100);
+// 					failure = 1;
+// 				}
+// 				explicit_bzero(&passwd, sizeof(passwd));
+// 				len = 0;
+// 				break;
+// 			case XK_Escape:
+// 				explicit_bzero(&passwd, sizeof(passwd));
+// 				len = 0;
+// 				break;
+// 			case XK_BackSpace:
+// 				if (len)
+// 					passwd[--len] = '\0';
+// 				break;
+// 			default:
+// 				if (num && !iscntrl((int)buf[0]) &&
+// 				    (len + num < sizeof(passwd))) {
+// 					memcpy(passwd + len, buf, num);
+// 					len += num;
+// 				}
+// 				break;
+// 			}
+// 			color = len ? INPUT : ((failure || failonclear) ? FAILED : INIT);
+// 			if (running && oldc != color) {
+// 				for (screen = 0; screen < nscreens; screen++) {
+//                     if(locks[screen]->bgmap)
+//                         XSetWindowBackgroundPixmap(dpy, locks[screen]->win, locks[screen]->bgmap);
+//                     else
+//                         XSetWindowBackground(dpy, locks[screen]->win, locks[screen]->colors[0]);
+// 					//XClearWindow(dpy, locks[screen]->win);
+//                     drawlogo(dpy, locks[screen], color);
+//  				}
+// 				oldc = color;
+// 			}
+// 		} else if (rr->active && ev.type == rr->evbase + RRScreenChangeNotify) {
+// 			rre = (XRRScreenChangeNotifyEvent*)&ev;
+// 			for (screen = 0; screen < nscreens; screen++) {
+// 				if (locks[screen]->win == rre->window) {
+// 					if (rre->rotation == RR_Rotate_90 ||
+// 					    rre->rotation == RR_Rotate_270)
+// 						XResizeWindow(dpy, locks[screen]->win,
+// 						              rre->height, rre->width);
+// 					else
+// 						XResizeWindow(dpy, locks[screen]->win,
+// 						              rre->width, rre->height);
+// 					XClearWindow(dpy, locks[screen]->win);
+// 					break;
+// 				}
+// 			}
+// 		} else {
+// 			for (screen = 0; screen < nscreens; screen++)
+// 				XRaiseWindow(dpy, locks[screen]->win);
+// 		}
+// 	}
+// }
+
+
+static void readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens, const char *hash, char *message)
 {
-	XRRScreenChangeNotifyEvent *rre;
-	char buf[32], passwd[256], *inputhash;
-	int num, screen, running, failure, oldc;
-	unsigned int len, color;
-	KeySym ksym;
-	XEvent ev;
+    XRRScreenChangeNotifyEvent *rre;
+    char buf[32], passwd[256], *inputhash;
+    int num, screen, running, failure, oldc;
+    unsigned int len, color;
+    KeySym ksym;
+    XEvent ev;
 
-	len = 0;
-	running = 1;
-	failure = 0;
-	oldc = INIT;
+    len = 0;
+    running = 1;
+    failure = 0;
+    oldc = INIT;
 
-	while (running && !XNextEvent(dpy, &ev)) {
-		if (ev.type == KeyPress) {
-			explicit_bzero(&buf, sizeof(buf));
-			num = XLookupString(&ev.xkey, buf, sizeof(buf), &ksym, 0);
-			if (IsKeypadKey(ksym)) {
-				if (ksym == XK_KP_Enter)
-					ksym = XK_Return;
-				else if (ksym >= XK_KP_0 && ksym <= XK_KP_9)
-					ksym = (ksym - XK_KP_0) + XK_0;
-			}
-			if (IsFunctionKey(ksym) ||
-			    IsKeypadKey(ksym) ||
-			    IsMiscFunctionKey(ksym) ||
-			    IsPFKey(ksym) ||
-			    IsPrivateKeypadKey(ksym))
-				continue;
-			switch (ksym) {
-			case XK_Return:
-				passwd[len] = '\0';
-				errno = 0;
-				if (!(inputhash = crypt(passwd, hash)))
-					fprintf(stderr, "slock: crypt: %s\n", strerror(errno));
-				else
-					running = !!strcmp(inputhash, hash);
-				if (running) {
-					XBell(dpy, 100);
-					failure = 1;
-				}
-				explicit_bzero(&passwd, sizeof(passwd));
-				len = 0;
-				break;
-			case XK_Escape:
-				explicit_bzero(&passwd, sizeof(passwd));
-				len = 0;
-				break;
-			case XK_BackSpace:
-				if (len)
-					passwd[--len] = '\0';
-				break;
-			default:
-				if (num && !iscntrl((int)buf[0]) &&
-				    (len + num < sizeof(passwd))) {
-					memcpy(passwd + len, buf, num);
-					len += num;
-				}
-				break;
-			}
-			color = len ? INPUT : ((failure || failonclear) ? FAILED : INIT);
-			if (running && oldc != color) {
-				for (screen = 0; screen < nscreens; screen++) {
-                    if(locks[screen]->bgmap)
-                        XSetWindowBackgroundPixmap(dpy, locks[screen]->win, locks[screen]->bgmap);
-                    else
-                        XSetWindowBackground(dpy, locks[screen]->win, locks[screen]->colors[0]);
-					//XClearWindow(dpy, locks[screen]->win);
-                    drawlogo(dpy, locks[screen], color);
- 				}
-				oldc = color;
-			}
-		} else if (rr->active && ev.type == rr->evbase + RRScreenChangeNotify) {
-			rre = (XRRScreenChangeNotifyEvent*)&ev;
-			for (screen = 0; screen < nscreens; screen++) {
-				if (locks[screen]->win == rre->window) {
-					if (rre->rotation == RR_Rotate_90 ||
-					    rre->rotation == RR_Rotate_270)
-						XResizeWindow(dpy, locks[screen]->win,
-						              rre->height, rre->width);
-					else
-						XResizeWindow(dpy, locks[screen]->win,
-						              rre->width, rre->height);
-					XClearWindow(dpy, locks[screen]->win);
-					break;
-				}
-			}
-		} else {
-			for (screen = 0; screen < nscreens; screen++)
-				XRaiseWindow(dpy, locks[screen]->win);
-		}
-	}
+    while (running) {
+        while (XPending(dpy)) {
+            XNextEvent(dpy, &ev);
+
+            if (ev.type == KeyPress) {
+                explicit_bzero(&buf, sizeof(buf));
+                num = XLookupString(&ev.xkey, buf, sizeof(buf), &ksym, 0);
+                if (IsKeypadKey(ksym)) {
+                    if (ksym == XK_KP_Enter)
+                        ksym = XK_Return;
+                    else if (ksym >= XK_KP_0 && ksym <= XK_KP_9)
+                        ksym = (ksym - XK_KP_0) + XK_0;
+                }
+                if (IsFunctionKey(ksym) || IsKeypadKey(ksym) || IsMiscFunctionKey(ksym) ||
+                    IsPFKey(ksym) || IsPrivateKeypadKey(ksym))
+                    continue;
+
+                switch (ksym) {
+                    case XK_Return:
+                        passwd[len] = '\0';
+                        errno = 0;
+                        if (!(inputhash = crypt(passwd, hash)))
+                            fprintf(stderr, "slock: crypt: %s\n", strerror(errno));
+                        else
+                            running = !!strcmp(inputhash, hash);
+                        if (running) {
+                            XBell(dpy, 100);
+                            failure = 1;
+                        }
+                        explicit_bzero(&passwd, sizeof(passwd));
+                        len = 0;
+                        break;
+                    case XK_Escape:
+                        explicit_bzero(&passwd, sizeof(passwd));
+                        len = 0;
+                        break;
+                    case XK_BackSpace:
+                        if (len)
+                            passwd[--len] = '\0';
+                        break;
+                    default:
+                        if (num && !iscntrl((int)buf[0]) && (len + num < sizeof(passwd))) {
+                            memcpy(passwd + len, buf, num);
+                            len += num;
+                        }
+                        break;
+                }
+
+                color = len ? INPUT : ((failure || failonclear) ? FAILED : INIT);
+                if (running && oldc != color) {
+                    for (screen = 0; screen < nscreens; screen++) {
+                        if (locks[screen]->bgmap)
+                            XSetWindowBackgroundPixmap(dpy, locks[screen]->win, locks[screen]->bgmap);
+                        else
+                            XSetWindowBackground(dpy, locks[screen]->win, locks[screen]->colors[0]);
+                        drawlogo(dpy, locks[screen], color);
+                    }
+                    oldc = color;
+                }
+            } else if (rr->active && ev.type == rr->evbase + RRScreenChangeNotify) {
+                rre = (XRRScreenChangeNotifyEvent*)&ev;
+                for (screen = 0; screen < nscreens; screen++) {
+                    if (locks[screen]->win == rre->window) {
+                        if (rre->rotation == RR_Rotate_90 || rre->rotation == RR_Rotate_270)
+                            XResizeWindow(dpy, locks[screen]->win, rre->height, rre->width);
+                        else
+                            XResizeWindow(dpy, locks[screen]->win, rre->width, rre->height);
+                        XClearWindow(dpy, locks[screen]->win);
+                        break;
+                    }
+                }
+            } else {
+                for (screen = 0; screen < nscreens; screen++)
+                    XRaiseWindow(dpy, locks[screen]->win);
+            }
+        }
+
+        // Additional code to handle other tasks or events while waiting for user input
+        // ...
+
+        // Delay to prevent high CPU usage in the loop
+        usleep(1000);
+    }
 }
 
 static struct lock *
@@ -416,6 +517,7 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
 	if(image)
     {
         lock->bgmap = XCreatePixmap(dpy, lock->root, DisplayWidth(dpy, lock->screen), DisplayHeight(dpy, lock->screen), DefaultDepth(dpy, lock->screen));
+
         imlib_context_set_image(image);
         imlib_context_set_display(dpy);
         imlib_context_set_visual(DefaultVisual(dpy, lock->screen));
@@ -592,25 +694,25 @@ main(int argc, char **argv) {
 		die("slock: setuid: %s\n", strerror(errno));
 
 	/*Create screenshot Image*/
-	Screen *scr = ScreenOfDisplay(dpy, DefaultScreen(dpy));
+	scr = ScreenOfDisplay(dpy, DefaultScreen(dpy));
 	image = imlib_create_image(scr->width,scr->height);
 	imlib_context_set_image(image);
 	imlib_context_set_display(dpy);
 	imlib_context_set_visual(DefaultVisual(dpy,0));
-	imlib_context_set_drawable(RootWindow(dpy,XScreenNumberOfScreen(scr)));	
+	imlib_context_set_drawable(RootWindow(dpy,XScreenNumberOfScreen(scr)));
 	imlib_copy_drawable_to_image(0,0,0,scr->width,scr->height,0,0,1);
 
 #ifdef BLUR
 
 	/*Blur function*/
 	imlib_image_blur(blurRadius);
-#endif // BLUR	
+#endif // BLUR
 
 #ifdef PIXELATION
 	/*Pixelation*/
 	int width = scr->width;
 	int height = scr->height;
-	
+
 	for(int y = 0; y < height; y += pixelSize)
 	{
 		for(int x = 0; x < width; x += pixelSize)
@@ -619,7 +721,7 @@ main(int argc, char **argv) {
 			int green = 0;
 			int blue = 0;
 
-			Imlib_Color pixel; 
+			Imlib_Color pixel;
 			Imlib_Color* pp;
 			pp = &pixel;
 			for(int j = 0; j < pixelSize && j < height; j++)
@@ -642,8 +744,8 @@ main(int argc, char **argv) {
 			blue = 0;
 		}
 	}
-	
-	
+
+
 #endif
 	/* check for Xrandr support */
 	rr.active = XRRQueryExtension(dpy, &rr.evbase, &rr.errbase);

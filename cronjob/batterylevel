@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Get the battery level
+battery_level=`cat /sys/class/power_supply/BAT0/capacity`
+
+# Send a notification if battery is low
+if [ $battery_level -le 15 ]
+then
+    notify-send --urgency=critical -w -a "Battery Low" "System Information Warning" "Your battery level is ${battery_level}%! Plug-it before it's too late!"
+fi

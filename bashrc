@@ -85,8 +85,12 @@ function save_config()
 function xs()
 {
     if [[ $1 == "on" ]]; then
-        xrandr --output HDMI-1-0 --$2 eDP-1 --mode 1920x1080;
-        xrandr --output eDP-1 --mode 1920x1080;
+        if [[ $2 == "same-as" ]]; then
+            xrandr --output HDMI-1-0 --$2 eDP-1 --mode 1920x1080;
+            xrandr --output eDP-1 --mode 1920x1080;
+        else
+            xrandr --output HDMI-1-0 --$2 eDP-1 --auto;
+        fi
     elif [[ $1 == "off" ]]; then
         xrandr --output HDMI-1-0 --off;
         xrandr --output eDP-1 --mode 2560x1440;
@@ -106,10 +110,11 @@ xset s off
 xset -dpms
 gk epitech
 
+alias ls="ls --color=auto"
 alias l="ls"
-alias la="ls -a"
-alias lla="ls -al"
-alias lal="ls -al"
+alias la="ls -a --color=auto"
+alias lla="ls -al --color=auto"
+alias lal="ls -al --color=auto"
 alias em="emacs"
 alias cdd="cd ../"
 alias cddd="cd ../../"
@@ -125,7 +130,7 @@ alias pt="push_that.sh"
 alias off="systemctl poweroff"
 alias sl="setxkbmap ru"
 alias ,,,="setxkbmap us"
-alias ga="make fclean; git add"
+alias ga="git add"
 alias gaa="echo \"check objects files\" ; git add --all"
 alias gc="git commit -m"
 alias gcm='git commit -m "add a lot of functionnalities"'
@@ -142,3 +147,8 @@ alias alias="yes casse toi avec ton "
 unset rc
 [ -f "/home/julithein/.ghcup/env" ] && source "/home/julithein/.ghcup/env" # ghcup-env
 . "$HOME/.cargo/env"
+
+# BEGIN SNIPPET: Platform.sh CLI configuration
+HOME=${HOME:-'/home/julithein'}
+export PATH="$HOME/"'.platformsh/bin':"$PATH"
+if [ -f "$HOME/"'.platformsh/shell-config.rc' ]; then . "$HOME/"'.platformsh/shell-config.rc'; fi # END SNIPPET
