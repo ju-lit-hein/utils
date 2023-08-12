@@ -3,5 +3,7 @@ if status is-interactive
 end
 
 command gk epitech
+command xset s off
+command xset -dpms
 # do not config here
 # go to ./conf.d/ and create and appropriate [category].fish file
