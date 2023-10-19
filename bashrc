@@ -1,5 +1,3 @@
-
-
 if [ -f /etc/bashrc ];
 then
     . /etc/bashrc
@@ -17,7 +15,8 @@ if [ -d ~/.bashrc.d ]; then
         if [ -f "$rc" ]; then
             . "$rc"
         fi
-    done fi
+    done
+fi
 
 function parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
@@ -147,8 +146,3 @@ alias alias="yes casse toi avec ton "
 unset rc
 [ -f "/home/julithein/.ghcup/env" ] && source "/home/julithein/.ghcup/env" # ghcup-env
 . "$HOME/.cargo/env"
-
-# BEGIN SNIPPET: Platform.sh CLI configuration
-HOME=${HOME:-'/home/julithein'}
-export PATH="$HOME/"'.platformsh/bin':"$PATH"
-if [ -f "$HOME/"'.platformsh/shell-config.rc' ]; then . "$HOME/"'.platformsh/shell-config.rc'; fi # END SNIPPET
