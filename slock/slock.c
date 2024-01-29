@@ -1,4 +1,5 @@
 /* See LICENSE file for license details. */
+#include <X11/X.h>
 #define _XOPEN_SOURCE   500
 #define LENGTH(X)       (sizeof X / sizeof X[0])
 #if HAVE_SHADOW_H
@@ -31,6 +32,9 @@ char *argv0;
 
 /* global count to prevent repeated error messages */
 int count_error = 0;
+
+int canUnlockWithKey = 1; 
+#define UNLOCK_KEY XK_Alt_R
 
 enum {
 	BG,
@@ -402,11 +406,13 @@ static void readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nsc
     unsigned int len, color;
     KeySym ksym;
     XEvent ev;
+    int unlock;
 
     len = 0;
     running = 1;
     failure = 0;
     oldc = INIT;
+    unlock = 0;
 
     while (running) {
         while (XPending(dpy)) {
@@ -448,6 +454,8 @@ static void readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nsc
                         if (len)
                             passwd[--len] = '\0';
                         break;
+                    case UNLOCK_KEY:
+                        ++unlock;
                     default:
                         if (num && !iscntrl((int)buf[0]) && (len + num < sizeof(passwd))) {
                             memcpy(passwd + len, buf, num);
@@ -484,6 +492,9 @@ static void readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nsc
                     XRaiseWindow(dpy, locks[screen]->win);
             }
         }
+
+        if (canUnlockWithKey && unlock >= 5)
+          running = 0;
 
         // Additional code to handle other tasks or events while waiting for user input
         // ...
