@@ -34,7 +34,7 @@ char *argv0;
 int count_error = 0;
 
 int canUnlockWithKey = 1; 
-#define UNLOCK_KEY XK_Alt_R
+#define UNLOCK_KEY XK_Alt_L
 
 enum {
 	BG,
